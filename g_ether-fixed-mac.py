@@ -14,6 +14,7 @@
 
 ## imports
 import os
+from getserial import getSerial
 
 
 ## globals
@@ -23,8 +24,7 @@ import os
 # locally administered MAC address range (i.e. second digit is one of
 # 2, 6, A, or E)
 # do not include any : characters, just the hex digits
-# if a prefix is 12 digits or longer the first 12 will be returned
-# as the MAC address
+# strange things will happen if either prefix is more than 12 digits
 PREFIX_1 = '02'
 PREFIX_2 = '06'
 
@@ -35,20 +35,6 @@ MODULE_EXTRAS = ''
 
 
 ## functions
-## getserial function is from https://www.raspberrypi-spy.co.uk/2012/09/getting-your-raspberry-pi-serial-number-using-python/
-def getserial():
-  # Extract serial from cpuinfo file
-  cpuserial = "0000000000000000"
-  try:
-    f = open('/proc/cpuinfo','r')
-    for line in f:
-      if line[0:6]=='Serial':
-        cpuserial = line[10:26]
-    f.close()
-  except:
-    cpuserial = "ERROR000000000"
- 
-  return cpuserial
 
 def make_mac(prefix, serial):
   # prefix and serial are expected to be strings
@@ -68,7 +54,7 @@ def make_mac(prefix, serial):
 
 # main process
 if __name__ == '__main__':
-  serial = getserial()
+  serial = getSerial()
   # get MAC addresses
   mac_1 = make_mac(PREFIX_1, serial)
   mac_2 = make_mac(PREFIX_2, serial)
