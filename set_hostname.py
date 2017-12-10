@@ -30,7 +30,7 @@ def set_host_name():
 
     new_hostname = HOSTNAME_PREFIX + serial
     current_hostname = gethostname()
-    if new_hostname == current_hostname:
+    if new_hostname.lower() == current_hostname.lower():
         # hostname is correct so no need to do anything
         result = 0
     else:
