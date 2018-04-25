@@ -19,18 +19,19 @@ libcomposite/USB gadget code based on that present on https://github.com/ckuethe
 """
 
 ## Imports
-import os
-import sys
-import logging
-import subprocess
-from socket import gethostname
 import argparse
+import logging
+import os
+import subprocess
+import sys
+import warnings
+from socket import gethostname
 
 
 ## Globals
 # logging
 LOG_LEVEL = 30 # warnings
-##LOG_LEVEL = logging.DEBUG # uncomment for debug output
+LOG_LEVEL = logging.DEBUG # uncomment for debug output
 # USB gadget config
 USB_BASE_DIR = '/sys/kernel/config/usb_gadget'
 USB_DEV_NAME = 'foo'
@@ -134,7 +135,6 @@ def USBSetStorage(storage):
 
 
 ## Functions - hostname
-
 def validHostname(name):
     """Validate hostname"""
     validchars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-'
@@ -234,7 +234,7 @@ def setHostname(newname, oldname, reboot=True):
                 nh.write(l)
 
     if reboot:
-        logging.debug(\t'Rebooting')
+        logging.debug('\tRebooting')
         subprocess.call('reboot')
 
     return True
@@ -293,21 +293,21 @@ def make_mac(prefix, serial):
     return mac
 
 def write_config(hostname, devmac=None, hostmac=None,
-                 serial=getSerial(),
+                 serial=None,
                  target=os.path.join(ID_PATH,ID_FILE)):
+    if serial is None:
+        serial = getSerial()
     with open(target, 'w+') as f:
         f.write('hostname:\t%s\r\n' % hostname)
         f.write('serial:\t\t%s\r\n' % serial)
         f.write('my MAC:\t\t%s\r\n' % devmac)
-        f.write('host MAC\t%s<\r\n' % hostmac)
+        f.write('host MAC:\t%s<\r\n' % hostmac)
     
 
 ## Main
-##logging.basicConfig(level=LOG_LEVEL)
 if iAmNotRoot():
 ##    logging.debug('Not root')
     sys.exit('Must be root')
-##logging.debug('I am groot!')
 
 # parse cmdline
 parser= argparse.ArgumentParser(description='Configure hostname and USB gadget MAC addresses from serial number')
@@ -353,11 +353,14 @@ loggerconfig = {'format':'%(levelname)s\t: %(message)s',
                 'level':args.debug}
 if args.logfile:
     loggerconfig['filename'] = args.logfile
-    
+
 logging.basicConfig(**loggerconfig)
 logging.debug('Command line args: %s' % args)
 
 try:
+    # disable warnings
+    if not sys.warnoptions:
+        warnings.simplefilter('ignore')
     # serial number
     serial = getSerial()
     # MAC addresses
