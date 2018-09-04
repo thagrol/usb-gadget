@@ -1,0 +1,13 @@
+# hostnames file for use with set_id.py
+#
+# Lines starting with "#" are comments
+# Leading zeros cay be omitted from serial numbers
+# If a serial number appears more than once, only the first will be matched
+# 
+# There is no checking for duplicate hostnames. Use them at your own risk,
+#   doing so may complicate DNS lookups on your network.
+# Format
+# serianl_number	hostname
+#
+123456 foo
+234567 bar
