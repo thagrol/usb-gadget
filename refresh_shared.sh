@@ -11,11 +11,16 @@
 # an aproprite entry for the exported storage must exist in /etc/fstab
 # lsof must be installed (sudo apt install lsof)
 
-echo $1
-
 if [ $# != 1 ]; then
 	echo "usage: $0 <mount point>" > /dev/stderr
 	exit 1
+fi
+
+which lsof >/dev/null 2>&1
+
+if [ $? != 0 ]; then
+    echo "lsof not found" > /dev/stderr
+    exit 1
 fi
 
 while :

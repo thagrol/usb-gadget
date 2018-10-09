@@ -15,7 +15,7 @@ For full instructions see
 ## refresh_shared.sh
 Bash script to periodically unmount and remount the shared storage for the USB mass storage gadget.
 
-lsof must be installed `sudo apt install lsof`
+lsof must be installed: `sudo apt install lsof`
 
 There must be an apropriate entry in /etc/fstab for the shared storage.
 
@@ -26,7 +26,7 @@ the script unmounts and remounts it.
 
 Data corruption is still possible. This script does not address or resolve any of the issues relating to write access.
 
-Usage: refresh_shared.sh <mount point>
+Usage: `refresh_shared.sh <mount point>`
 
 ## set_id.py
 Python script to set hostname and load the g_ether USB gadget module with fix MAC address. Both derived from the Pi's serial number.
