@@ -13,7 +13,7 @@ For full instructions see
 [http://www.instructables.com/id/NAS-Access-for-Non-Networked-Devices/](URL)
 
 ## refresh_shared.sh
-Bash script to periodically unmount and remount the shared storage for the USB mass storage gadget.
+Bash script to periodically unmount and remount the shared storage for the USB mass storage gadget. Changes made by the USB host will thus be visible to the linux device. CHanges made localy will not be propogated to the USB host.
 
 lsof must be installed: `sudo apt install lsof`
 
